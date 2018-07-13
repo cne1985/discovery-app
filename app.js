@@ -132,3 +132,19 @@ bot.recognizer(recognizer);
  ).triggerAction({
      matches: 'None',
  });	
+
+ function validateUserName(session) {
+
+    var userInfo = session.message.entities.find((e) => {
+        return e.type === 'UserInfo';
+    });
+
+    if (userInfo) {
+        session.userData.userName = userInfo['name']['GivenName'];
+    }
+    else {
+        session.userData.userName = "awesome developer"
+    }
+
+    return session.userData.userName;
+};
