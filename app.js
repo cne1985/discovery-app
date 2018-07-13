@@ -38,5 +38,22 @@ bot.recognizer(recognizer);
 
 // End of Defaults
 
+// Discover content for the requested entity
+bot.dialog('DiscoverContentDialog', [
+    function (session, args, next){
+        var displayName = validateUserName(session);
+        var intent = args.intent;
 
+        if (intent.entities) {
+            var searchQuery = intent.entities[0].entity;
+
+            discovery.showDiscoveryResults(session, searchQuery);
+        }
+        else {
+            session.replaceDialog('HelpDialog');
+        }
+    },
+]).triggerAction({
+    matches: 'DiscoverContent'
+});
  
