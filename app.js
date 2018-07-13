@@ -54,6 +54,38 @@ bot.dialog('DiscoverContentDialog', [
         }
     },
 ]).triggerAction({
-    matches: 'DiscoverContent'
+    matches: 'DiscoverContent',
+});
+
+// Search for news on the specified date
+bot.dialog('SearchNewsDialog', [
+    function (session, args, next){
+        var displayName = validateUserName(session);
+
+        var selectedDate;
+        var selectedLabel;
+
+        var intent = args.intent;
+        var dateEntity = builder.EntityRecognizer.findEntity(intent.entities, 'builtin.datetimeV2.date');
+
+        if (dateEntity == null) {
+            dateEntity = builder.EntityRecognizer.findEntity(intent.entities, 'builtin.datetimeV2.daterange');
+            selectedDate = dateEntity.resolution.values[0].start;
+            selectedLabel = dateEntity.entity;
+        }
+        else {
+            selectedDate = dateEntity.resolution.values[0].value;
+            selectedLabel = dateEntity.entity;
+        }
+
+        if (dateEntity != null && selectedDate != null) {
+            newsday.showDiscoveryResults(session, selectedLabel, selectedDate);
+        }
+        else {
+            session.replaceDialog('helpDialog');
+        }
+    },
+]).triggerAction({
+    matches: 'SearchNews',
 });
  
