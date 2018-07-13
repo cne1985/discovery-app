@@ -35,4 +35,8 @@ bot.set('storage', inMemoryStorage);
 // Create a recogniser that gets intents from LUIS, and add it to the bot
 var recognizer = new builder.LuisRecognizer(luisModelUrl)
 bot.recognizer(recognizer);
+
+// End of Defaults
+
+
  
